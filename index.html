@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="assets/css/style.css" />
   <link href="https://fonts.cdnfonts.com/css/din-alternate" rel="stylesheet">
   <!-- Google Fonts example for Open Sans -->
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 
   <style>
     #contactForm label {
@@ -81,15 +81,20 @@
       <img src="assets/images/Logo.png" alt="Logo" />
     </div>
     <nav class="nav">
-      <div id="hamburger">&#9776;</div> <!-- Moved outside ul -->
-      <ul id="menu">
+      <!-- Hamburger Icon - always visible -->
+      <div id="hamburger" class="hamburger" onclick="toggleMenu()">&#9776;</div>
+
+      <!-- Navigation Menu -->
+      <ul id="menu" class="nav-menu">
         <li><a href="#">Home</a></li>
         <li><a href="#">Our Screens</a></li>
         <li><a href="#">Schedule</a></li>
         <li><a href="#">Movie Library</a></li>
         <li><a href="#">Location & Contact</a></li>
+        <li class="togleadd"><a href="#">☰</a></li>
       </ul>
     </nav>
+
   </header>
 
   <!-- MAIN VISUAL -->
