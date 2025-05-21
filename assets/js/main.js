@@ -9,7 +9,12 @@ document.getElementById("search").addEventListener("keyup", function (e) {
     searchAndAdd();
   }
 });
-
+const hamMenu = document.querySelector(".ham-menu");
+const offScreenMenu = document.querySelector(".off-screen-menu");
+hamMenu.addEventListener("click", () => {
+  hamMenu.classList.toggle("active");
+  offScreenMenu.classList.toggle("active");
+});
 // Search and add function (add to grid without clearing existing cards)
 async function searchAndAdd() {
   const input = document.getElementById("search");
