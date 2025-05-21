@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Movie Library</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link href="https://fonts.cdnfonts.com/css/din-alternate" rel="stylesheet">
+  <!-- Google Fonts example for Open Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
+  <style>
+    #contactForm label {
+      color: #B7B7B7;
+      font-family: 'open sans';
+    }
+
+    #contactForm input,
+    #contactForm textarea {
+      color: #3C3C3C;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    async function searchMovies() {
+      const query = document.getElementById("search").value;
+      const resultsContainer = document.getElementById("searchResults");
+      resultsContainer.innerHTML = ""; // Clear previous results
+
+      if (!query.trim()) return;
+
+      try {
+        const res = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`);
+        const data = await res.json();
+
+        if (data.length === 0) {
+          resultsContainer.innerHTML = "<p>No results found.</p>";
+          return;
+        }
+
+        data.forEach(result => {
+          const show = result.show;
+          const card = document.createElement("div");
+          card.className = "movie-card";
+
+          card.innerHTML = `
+          <img src="${show.image ? show.image.medium : 'https://via.placeholder.com/210x295?text=No+Image'}" alt="${show.name}" />
+          <h4>${show.name}</h4>
+          <p>${show.summary ? show.summary.replace(/<[^>]*>/g, '').substring(0, 100) + '...' : 'No description available.'}</p>
+          <button onclick='addToFavorites(this)'>Add to Favorites</button>
+        `;
+
+          resultsContainer.appendChild(card);
+        });
+      } catch (err) {
+        resultsContainer.innerHTML = "<p>Error fetching data. Try again later.</p>";
+        console.error(err);
+      }
+    }
+
+    function addToFavorites(button) {
+      const card = button.parentElement.cloneNode(true);
+      card.querySelector("button").textContent = "Remove";
+      card.querySelector("button").setAttribute("onclick", "removeCard(this)");
+
+      document.getElementById("movieGrid").appendChild(card);
+    }
+
+    function removeCard(button) {
+      button.parentElement.remove();
+    }
+  </script>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <img src="assets/images/Logo.png" alt="Logo" />
+    </div>
+    <nav class="nav">
+      <div id="hamburger">&#9776;</div> <!-- Moved outside ul -->
+      <ul id="menu">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Our Screens</a></li>
+        <li><a href="#">Schedule</a></li>
+        <li><a href="#">Movie Library</a></li>
+        <li><a href="#">Location & Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- MAIN VISUAL -->
+  <section class="main-visual">
+    <img src="assets/images/banner.png" alt="Cinema seats" />
+    <!-- Optional slideshow/video can be added here -->
+  </section>
+
+  <!-- INTRO -->
+  <section class="intro1">
+    <div class="Maintxt">
+      <h2>Movie Library</h2>
+    </div>
+    <div class="paratxt">
+      <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr,</p>
+      <p>sed diam nonumy eirmod tempor invidunt ut labore et</p>
+      <p>dolore magna aliquyam erat, sed diam voluptua.</p>
+    </div>
+  </section>
+
+  <!-- COLLECT YOUR FAVORITES -->
+  <section class="favorites">
+    <!-- Search Section -->
+    <div class="search-container">
+      <h2>Collect your favourites</h2>
+      <!-- Search Bar with Icon Inside Input -->
+      <div class="search-bar">
+        <div class="search-input-wrapper">
+          <input type="text" id="search" placeholder="    Search title and add to grid" />
+          <span class="search-icon" onclick="searchMovies()"><i class="fas fa-search"></i></span>
+        </div>
+      </div>
+    </div>
+    <hr class="divider" />
+
+    <!-- Favorites Grid -->
+    <div class="movie-grid" id="movieGrid">
+      <div class="movie-card">
+        <button class="remove-btn" onclick="removeCard(this)">×</button>
+        <img src="assets/images/Rectangle 4.png" alt="Batman Returns" />
+        <h4>Batman Returns</h4>
+        <p>Lorem ipsum dolor sit amet,</p>
+        <p>consetetur sadipscing elitr, sed diam</p>
+        <p>nonumy eirmod tempor invidunt ut…</p>
+      </div>
+
+      <div class="movie-card">
+        <button class="remove-btn" onclick="removeCard(this)">×</button>
+        <img src="assets/images/Rectangle 42.png" alt="Wild Wild West" />
+        <h4>Wild Wild West</h4>
+        <p>Lorem ipsum dolor sit amet,</p>
+        <p>consetetur sadipscing elitr, sed diam</p>
+        <p>nonumy eirmod tempor invidunt ut…</p>
+      </div>
+
+      <div class="movie-card">
+        <button class="remove-btn" onclick="removeCard(this)">×</button>
+        <img src="assets/images/Rectangle 41.png" alt="Wild Wild West" />
+        <h4>The Amazing Spiderman</h4>
+        <p>Lorem ipsum dolor sit amet,</p>
+        <p>consetetur sadipscing elitr, sed diam</p>
+        <p>nonumy eirmod tempor invidunt ut…</p>
+      </div>
+
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-map" id="contact">
+    <h3 class="Maintext12">How to Reach Us</h3>
+    <p class="paratxt12">Lorem ipsum dolor sit amet, consetetur.</p>
+    <div class="contact-map-container">
+
+      <!-- Contact Form -->
+      <form id="contactForm" method="POST" action="contact/submit_form.php" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name <span style="color: #B7B7B7;">*</span></label>
+            <input type="text" id="firstName" name="firstName" required />
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name <span style="color: #B7B7B7;">*</span></label>
+            <input type="text" id="lastName" name="lastName" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email <span style="color: #3C3C3C;">*</span></label>
+          <input type="email" id="email" name="email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="telephone">Telephone</label>
+          <input type="text" id="telephone" name="telephone" />
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message <span style="color: #B7B7B7;">*</span></label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label>
+            <input type="checkbox" name="agree" required />
+            I agree to the <a href="#">Terms & Conditions</a>
+          </label>
+        </div>
+
+        <div class="form-button">
+          <button type="submit">SUBMIT</button>
+        </div>
+      </form>
+
+
+      <!-- Google Map -->
+      <div class="map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.3812075643614!2d79.9404323!3d6.844821199999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25069caa2f53b%3A0xe7eae3a8b1f1214d!2seBEYONDS%20eBusiness%20%26%20Digital%20Solutions!5e0!3m2!1sen!2slk!4v1747750323727!5m2!1sen!2slk"
+          width="773px" height="588px" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>"
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-top">
+      <div class="footer-left">
+        <h4>IT Group</h4>
+        <p>C. Salvador de Madariaga, 1</p>
+        <p>28027 Madrid</p>
+        <p>Spain</p>
+      </div>
+      <div class="footer-right">
+        <div class="social-icons">
+          <p>Follow us on</p>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+
+    </div>
+    </div>
+
+    <hr class="footer-line">
+
+    <div class="footer-bottom">
+      <p>Copyright © 2022 IT Hote Is. All rights reserved.</p>
+      <p>Photos by Felix Mooneeram & <a href="#">Serge Kutuzov</a> on <a href="#">Unsplash</a></p>
+    </div>
+  </footer>
+
+
+  <!-- JS Script -->
+  <script src="assets/js/main.js"></script>
+</body>
+
+</html>
